@@ -25,6 +25,8 @@ public class UserAgent {
 
     @Column(name = "device_type")
     private String deviceType;
+    @Column(name = "user_agent_hash")
+    private String userAgentHash;
 
     public UserAgent() {
     }
@@ -77,5 +79,13 @@ public class UserAgent {
 
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
+    }
+
+    public void setHash(String userAgentHash) {
+        this.userAgentHash = userAgentHash;
+    }
+
+    public String getHash() {
+        return userAgentHash;
     }
 }

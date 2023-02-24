@@ -6,40 +6,53 @@ import com.alex.restapidemo.repository.UserAgentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserAgentService {
+    private final UserAgentRepository userAgentRepository;
 
     @Autowired
-    private UserAgentRepository userAgentRepository;
-
-    public List<UserAgent> getAllUserAgents() {
-        return userAgentRepository.findAll();
+    public UserAgentService(UserAgentRepository userAgentRepository) {
+        this.userAgentRepository = userAgentRepository;
     }
 
-    public UserAgent getUserAgentById(Long id) throws UserAgentNotFoundException {
-        return userAgentRepository.findById(id)
-                .orElseThrow(() -> new UserAgentNotFoundException("Could not find UserAgent with ID:"+id));
+    public void createUserAgent(String userAgentString) {
+        String userAgentHash = hashUserAgent(userAgentString);
+        Optional<UserAgent> existingUserAgent = userAgentRepository.findById(userAgentHash);
+        if (existingUserAgent.isPresent()) {
+            UserAgent userAgentToUpdate = existingUserAgent.get();
+            userAgentToUpdate.setTimestamp(Timestamp.valueOf(LocalDateTime.now()));
+            userAgentRepository.save(userAgentToUpdate);
+        } else {
+            UserAgent newUserAgent = new UserAgent();
+            newUserAgent.setHash(userAgentHash);
+            newUserAgent.setUserAgentString(userAgentString);
+            newUserAgent.setTimestamp(Timestamp.valueOf(LocalDateTime.now()));
+            userAgentRepository.save(newUserAgent);
+        }
     }
 
-    public UserAgent createUserAgent(UserAgent userAgent) {
-        return userAgentRepository.save(userAgent);
+    public List<UserAgent> getLastTenUserAgents() {
+        return userAgentRepository.findTop10ByOrderByTimestampDesc();
     }
 
-    public UserAgent updateUserAgent(Long id, UserAgent userAgentDetails) throws UserAgentNotFoundException {
-        UserAgent userAgent = getUserAgentById(id);
-
-        userAgent.setBrowser(userAgentDetails.getBrowser());
-        userAgent.setOs(userAgentDetails.getOs());
-        userAgent.setDeviceType(userAgentDetails.getDeviceType());
-
-        return userAgentRepository.save(userAgent);
-    }
-
-    public void deleteUserAgent(Long id) throws UserAgentNotFoundException {
-        UserAgent userAgent = getUserAgentById(id);
-        userAgentRepository.delete(userAgent);
+    private String hashUserAgent(String userAgentString) {
+        // Use SHA-256 hashing algorithm to create a hash of the user agent string
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(userAgentString.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(hashBytes);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Unable to create user agent hash: " + e.getMessage(), e);
+        }
     }
 
 }
