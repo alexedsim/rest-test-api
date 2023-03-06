@@ -1,5 +1,7 @@
 package com.alex.restapidemo.controller;
 
+import com.alex.restapidemo.exception.UserAgentCreationException;
+import com.alex.restapidemo.exception.UserAgentNotFoundException;
 import com.alex.restapidemo.model.UserAgent;
 import com.alex.restapidemo.service.UserAgentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class UserAgentController {
     public UserAgentController(UserAgentService userAgentService) {
         this.userAgentService = userAgentService;
     }
-
+    /*
     @PostMapping
     public ResponseEntity<Void> createUserAgent(@RequestHeader(value = "User-Agent") String userAgentString) {
         userAgentService.createUserAgent(userAgentString);
@@ -31,4 +33,28 @@ public class UserAgentController {
         List<UserAgent> lastTenUserAgents = userAgentService.getLastTenUserAgents();
         return ResponseEntity.ok(lastTenUserAgents);
     }
+
+     */
+
+    @PostMapping
+    public ResponseEntity<Void> createUserAgent(@RequestHeader(value = "User-Agent") String userAgentString) {
+        try {
+            userAgentService.createUserAgent(userAgentString);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            throw new UserAgentCreationException("Failed to create user agent");
+        }
+    }
+
+
+    @GetMapping
+    public List<UserAgent> getLastTenUserAgents() {
+        List<UserAgent> lastTenUserAgents = userAgentService.getLastTenUserAgents();
+        if (lastTenUserAgents.isEmpty()) {
+            throw new UserAgentNotFoundException("No user agents found");
+        }
+        return lastTenUserAgents;
+    }
+
+
 }
