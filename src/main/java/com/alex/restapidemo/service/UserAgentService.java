@@ -5,6 +5,7 @@ import com.alex.restapidemo.model.UserAgent;
 import com.alex.restapidemo.repository.UserAgentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -24,6 +25,8 @@ public class UserAgentService {
         this.userAgentRepository = userAgentRepository;
     }
 
+
+    @Transactional
     public void createUserAgent(String userAgentString) {
         String userAgentHash = hashUserAgent(userAgentString);
         Optional<UserAgent> existingUserAgent = userAgentRepository.findById(userAgentHash);
