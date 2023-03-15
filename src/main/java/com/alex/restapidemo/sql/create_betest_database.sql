@@ -2,12 +2,11 @@ CREATE DATABASE IF NOT EXISTS betest;
 USE betest;
 
 CREATE TABLE IF NOT EXISTS useragent (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  user_agent_string VARCHAR(255) NOT NULL,
-  timestamp TIMESTAMP NOT NULL,
+  user_agent_hash VARCHAR(255) NOT NULL,
+  user_agent_string TEXT NOT NULL,
+  timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   browser VARCHAR(255),
   os VARCHAR(255),
   device_type VARCHAR(255),
-  user_agent_hash VARCHAR(255),
-  PRIMARY KEY (id)
+  PRIMARY KEY (user_agent_hash)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

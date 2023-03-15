@@ -10,10 +10,14 @@ import java.util.Optional;
 
 
 @Repository
-public interface UserAgentRepository extends JpaRepository<UserAgent, Long> {
+public interface UserAgentRepository extends JpaRepository<UserAgent, String> {
 
     @Query(value = "SELECT * FROM useragent ORDER BY timestamp DESC LIMIT 10", nativeQuery = true)
     List<UserAgent> findTop10ByOrderByTimestampDesc();
-
+    /*
     Optional<UserAgent> findById(String userAgentHash);
+
+     */
+    Optional<UserAgent> findByUserAgentHash(String userAgentHash);
+
 }

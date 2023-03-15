@@ -1,6 +1,6 @@
 package com.alex.restapidemo.service;
 
-import com.alex.restapidemo.exception.UserAgentNotFoundException;
+
 import com.alex.restapidemo.model.UserAgent;
 import com.alex.restapidemo.repository.UserAgentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +29,13 @@ public class UserAgentService {
     @Transactional
     public void createUserAgent(String userAgentString) {
         String userAgentHash = hashUserAgent(userAgentString);
-        Optional<UserAgent> existingUserAgent = userAgentRepository.findById(userAgentHash);
+        Optional<UserAgent> existingUserAgent = userAgentRepository.findByUserAgentHash(userAgentHash);
         if (existingUserAgent.isPresent()) {
             UserAgent userAgentToUpdate = existingUserAgent.get();
             userAgentToUpdate.setTimestamp(Timestamp.valueOf(LocalDateTime.now()));
             userAgentRepository.save(userAgentToUpdate);
         } else {
-            UserAgent newUserAgent = new UserAgent();
-            newUserAgent.setHash(userAgentHash);
-            newUserAgent.setUserAgentString(userAgentString);
+            UserAgent newUserAgent = new UserAgent(userAgentHash,userAgentString);
             newUserAgent.setTimestamp(Timestamp.valueOf(LocalDateTime.now()));
             userAgentRepository.save(newUserAgent);
         }

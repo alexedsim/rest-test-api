@@ -1,15 +1,21 @@
 package com.alex.restapidemo.model;
 import javax.persistence.*;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.Id;
+
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "useragent")
 public class UserAgent {
+    /*
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    */
+    @Id
+    @Column(name = "user_agent_hash")
+    private String userAgentHash;
     @Column(name = "user_agent_string")
     private String userAgentString;
 
@@ -25,21 +31,24 @@ public class UserAgent {
 
     @Column(name = "device_type")
     private String deviceType;
-    @Column(name = "user_agent_hash")
-    private String userAgentHash;
+
 
     public UserAgent() {
     }
 
-    public UserAgent(String userAgentString) {
+    public UserAgent( String userAgentHash, String userAgentString) {
+        this.userAgentHash = userAgentHash;
         this.userAgentString = userAgentString;
+
     }
 
     // Getters and setters
-
+    /*
     public Long getId() {
         return id;
     }
+
+     */
 
     public String getUserAgentString() {
         return userAgentString;
