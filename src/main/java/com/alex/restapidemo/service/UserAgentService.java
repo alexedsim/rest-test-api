@@ -20,7 +20,7 @@ import java.util.Optional;
 public class UserAgentService {
     private final UserAgentRepository userAgentRepository;
 
-    @Autowired
+
     public UserAgentService(UserAgentRepository userAgentRepository) {
         this.userAgentRepository = userAgentRepository;
     }

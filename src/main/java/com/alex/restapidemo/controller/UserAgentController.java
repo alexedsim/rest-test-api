@@ -14,10 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/useragents")
 public class UserAgentController {
-
+    @Autowired
     private final UserAgentService userAgentService;
 
-    @Autowired
     public UserAgentController(UserAgentService userAgentService) {
         this.userAgentService = userAgentService;
     }

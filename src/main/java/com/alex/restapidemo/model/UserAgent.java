@@ -1,7 +1,8 @@
 package com.alex.restapidemo.model;
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Id;
+//import org.springframework.data.annotation.Id;
 
 import java.sql.Timestamp;
 
