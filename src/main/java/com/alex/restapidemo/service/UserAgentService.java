@@ -3,7 +3,6 @@ package com.alex.restapidemo.service;
 
 import com.alex.restapidemo.model.UserAgent;
 import com.alex.restapidemo.repository.UserAgentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +54,10 @@ public class UserAgentService {
             throw new RuntimeException("Unable to create user agent hash: " + e.getMessage(), e);
         }
     }
-
+/*
+    public Object getUserAgentByHash(String userAgentHash) {
+        Optional<UserAgent> existingUserAgent = userAgentRepository.findByUserAgentHash(userAgentHash);
+        return existingUserAgent;
+    }
+    */
 }

@@ -46,14 +46,19 @@ public class UserAgentController {
     }
 
 
+
     @GetMapping
-    public List<UserAgent> getLastTenUserAgents() {
+    public ResponseEntity<List<UserAgent>> getLastTenUserAgents() {
         List<UserAgent> lastTenUserAgents = userAgentService.getLastTenUserAgents();
         if (lastTenUserAgents.isEmpty()) {
             throw new UserAgentNotFoundException("No user agents found");
         }
-        return lastTenUserAgents;
+        return ResponseEntity.ok(lastTenUserAgents);
     }
 
+    /*
+    public Object getUserAgentByHash(String hash1) {
+    }
 
+     */
 }
