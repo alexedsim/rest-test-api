@@ -3,11 +3,10 @@ import com.alex.restapidemo.controller.UserAgentController;
 import com.alex.restapidemo.exception.UserAgentCreationException;
 import com.alex.restapidemo.model.UserAgent;
 import com.alex.restapidemo.service.UserAgentService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -27,10 +26,12 @@ public class UserAgentControllerTest {
     @InjectMocks
     private UserAgentController userAgentController;
 
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
 
     @Test
     void testCreateUserAgent() {
