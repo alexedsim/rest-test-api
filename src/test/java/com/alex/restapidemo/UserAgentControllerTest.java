@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.mockito.exceptions.base.MockitoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -26,11 +27,15 @@ public class UserAgentControllerTest {
     @InjectMocks
     private UserAgentController userAgentController;
 
-
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        try {
+            MockitoAnnotations.openMocks(this);
+        } catch (MockitoException e) {
+            fail("Failed to initialize Mockito annotations: " + e.getMessage());
+        }
     }
+
 
 
     @Test
@@ -39,6 +44,7 @@ public class UserAgentControllerTest {
 
         // Verify that the createUserAgent method in the UserAgentService class was called once with the correct argument
         verify(userAgentService, times(1)).createUserAgent("user agent string");
+
     }
 
     @Test

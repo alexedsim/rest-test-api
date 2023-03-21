@@ -20,20 +20,7 @@ public class UserAgentController {
     public UserAgentController(UserAgentService userAgentService) {
         this.userAgentService = userAgentService;
     }
-    /*
-    @PostMapping
-    public ResponseEntity<Void> createUserAgent(@RequestHeader(value = "User-Agent") String userAgentString) {
-        userAgentService.createUserAgent(userAgentString);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
 
-    @GetMapping
-    public ResponseEntity<List<UserAgent>> getLastTenUserAgents() {
-        List<UserAgent> lastTenUserAgents = userAgentService.getLastTenUserAgents();
-        return ResponseEntity.ok(lastTenUserAgents);
-    }
-
-     */
 
     @PostMapping
     public ResponseEntity<Void> createUserAgent(@RequestHeader(value = "User-Agent") String userAgentString) {
