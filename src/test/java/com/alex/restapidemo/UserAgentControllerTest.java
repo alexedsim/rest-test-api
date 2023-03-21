@@ -3,6 +3,8 @@ import com.alex.restapidemo.controller.UserAgentController;
 import com.alex.restapidemo.exception.UserAgentCreationException;
 import com.alex.restapidemo.model.UserAgent;
 import com.alex.restapidemo.service.UserAgentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class UserAgentControllerTest {
+
+    private static final Logger logger = LogManager.getLogger(UserAgentControllerTest.class);
+
     @Mock
     private UserAgentService userAgentService;
 
@@ -40,6 +45,7 @@ public class UserAgentControllerTest {
 
     @Test
     void testCreateUserAgent() {
+        logger.info("Testing createUserAgent method");
         userAgentController.createUserAgent("user agent string");
 
         // Verify that the createUserAgent method in the UserAgentService class was called once with the correct argument
