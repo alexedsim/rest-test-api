@@ -13,5 +13,6 @@ public class RestApiDemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RestApiDemoApplication.class, args);
 	}
+	//TimeZone.setDefault(TimeZone.getTimeZone("UTC")); // set default time zone to UTC
 
 }
