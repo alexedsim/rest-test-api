@@ -53,22 +53,21 @@ public class UserAgentServiceTest {
     }
 
 
-
-
     @Test
-    void testCreateUserAgent_existingUserTwo() {
+    void testCreateUserAgent_existingUser() {
         String userAgentString = "user agent string";
         String userAgentHash = "offKEqA3fEn0vvnQjwUI7ho0TgQqseFZulJqcO+pdnk=";
 
+        /*we will use this timestamp to set our existing user,
+        * after the service call our existing user will have a different timestamp
+        * because of the update*/
+        Timestamp firstTimestamp = Timestamp.valueOf(LocalDateTime.of(1970, 1, 1, 0, 0));
+
         UserAgent existingUserAgent = new UserAgent(userAgentHash, userAgentString);
-        existingUserAgent.setTimestamp(Timestamp.valueOf(LocalDateTime.now().minusHours(1))); // Set an old timestamp to simulate an existing user agent
+        existingUserAgent.setTimestamp(firstTimestamp); // Set an old timestamp to simulate an existing user agent
 
         when(userAgentRepository.findByUserAgentHash(userAgentHash)).thenReturn(Optional.of(existingUserAgent));
 
-        // Create a UserAgent object with a known timestamp
-        Timestamp knownTimestamp = Timestamp.valueOf(LocalDateTime.of(2022, 1, 1, 0, 0));
-        UserAgent expectedUserAgent = new UserAgent(userAgentHash, userAgentString);
-        expectedUserAgent.setTimestamp(knownTimestamp);
 
         ArgumentCaptor<UserAgent> argument = ArgumentCaptor.forClass(UserAgent.class);
         userAgentService.createUserAgent(userAgentString);
@@ -77,10 +76,9 @@ public class UserAgentServiceTest {
         verify(userAgentRepository).save(argument.capture());
         UserAgent savedUserAgent = argument.getValue();
 
-        assertEquals(expectedUserAgent.getUserAgentString(), savedUserAgent.getUserAgentString());
-        assertTrue(savedUserAgent.getTimestamp().after(knownTimestamp));
+        assertEquals(savedUserAgent.getUserAgentString(), userAgentString);
+        assertTrue(savedUserAgent.getTimestamp().after(firstTimestamp));
     }
-
 
 
 
